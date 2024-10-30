@@ -1,0 +1,108 @@
+%!TEX root = ../main.tex
+
+%%%%%%% Code Highlighting with minted and pygements %%%%%%%%
+% Python and Python Package Pygments needed
+% docs: https://ctan.kako-dev.de/macros/latex/contrib/minted/minted.pdf
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%              See documentation at line 65              %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{keyval}
+\usepackage{kvoptions}
+\usepackage{fancyvrb}
+\usepackage{fvextra}
+\usepackage{upquote}
+\usepackage{ifthen}
+\usepackage{ifplatform}
+\usepackage{pdftexcmds}
+\usepackage{etoolbox}
+\usepackage{lineno}
+\usepackage{caption}
+\usepackage{catchfile}
+\usepackage[many]{tcolorbox}
+\usepackage[outputdir=../out]{minted}
+\tcbuselibrary{minted}
+
+% make fcolorbox a dummy for code blocks so that the red boxes for syntax errors are disabled
+\AtBeginEnvironment{code}{%
+    \renewcommand{\fcolorbox}[4][]{#4}}
+
+%%                                                 v  change emacs to change the default style
+\AtBeginDocument{%
+    \newtcblisting[blend into=listings]{code}[4][emacs]{
+        title={#3},
+        phantomlabel=#4,
+        listing engine=minted,
+        minted language=#2,
+        minted style=#1,
+        minted options={
+            linenos,
+            autogobble,
+            breaklines,
+            breakbefore={.|&!+-*/},
+            breakafter={,:()\{\}\space},
+            fontsize=\footnotesize,
+            xleftmargin=0.2em,
+            numbers=left,
+            numbersep=1em,
+            baselinestretch=1,
+            escapeinside=°°
+        },
+        listing only,
+        breakable,
+        enhanced jigsaw,
+        colframe=black,
+        sharp corners,
+        boxrule=2pt,
+        colback=white,
+        left=0em,
+        left skip=1.5em,
+        width=\linewidth-1.5em
+    }
+}
+
+% workaround for custom syntax highlighting
+% you must escape this inside the code block with semicolons
+\definecolor{greenForTypes}{rgb}{0, 0.5, 0}
+\newcommand{\typeName}[1]{\textbf{\textcolor{greenForTypes}{#1}}}
+% example:
+% \begin{code}{react}{Title}{lst:ReactComponent}
+%     export default function Component(props: ;\typeName{ComponentProps};) {
+% ...
+
+% check available styles with:
+%   pygmentize -L styles
+% in the terminal
+
+% check available languages with:
+%   pygmentize -L lexers
+% in the terminal
+
+% use the environment like this:
+% \begin{code}{LANGUAGE}{CAPTION}{LABEL}
+%   <the actual code>
+% \end{code}
+
+% or if you want to specify the style, use the environment like this:
+% \begin{code}[STYLE]{LANGUAGE}{CAPTION}{LABEL}
+%   <the actual code>
+% \end{code}
+
+% You can change the default style in line 29 by replacing the text in the last [] to the desired default style
+
+% for example:
+% \begin{code}{python}{Python Code}{lst:PythonCode}
+% def fibonacci(n):
+%   x = 0
+%   y = 1
+%   for i in range(n):
+%       x, y = y, x + y
+%   return x
+%
+% if __name__ == "__main__":
+%   import sys
+%
+%   n = int(sys.argv[1])
+%   print(fibonacci(10))
+% \end{code}

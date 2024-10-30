@@ -1,0 +1,246 @@
+%!TEX root = ../main.tex
+
+% show warning for old LaTeX syntax
+\RequirePackage[l2tabu, orthodox]{nag}
+
+\usepackage{xstring}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+% iflang command definition
+\newcommand{\iflang}[2]{%
+    \IfStrEq{\documentLanguage}{#1}{#2}{}%
+}
+
+% ifDocType comand definition
+\newcommand{\ifDocType}[3]{%
+    \IfStrEq{\documentType}{#1}{#2}{#3}%
+}
+
+% ifMultipleAuthors definition
+\newcommand{\ifMultipleAuthors}[2]{%
+    \IfStrEq{\multipleAuthors}{true}{#1}{#2}%
+}
+
+% ifSpecialDocument definition
+\newcommand{\ifSpecialDocument}[2]{\IfStrEqCase{\documentType}{%
+        {T3\_1000}{#2\ignorespaces}%
+        {T3\_2000}{#2\ignorespaces}%
+        {T3\_3100}{#2\ignorespaces}%
+        {T3\_3300}{#2\ignorespaces}%
+}[#1\ignorespaces]%
+}
+
+% Include main settings
+\input{settings/main}
+
+% Include document settings
+\input{settings/document}
+
+% Load language specific Strings
+\input{lang/\documentLanguage}
+
+% Load language specific babel package
+\iflang{de}{\usepackage[english, ngerman]{babel}}
+\iflang{en}{\usepackage[ngerman, english]{babel}}
+
+% Add comment feature
+\newcommand{\comment}[1]{\par {\bfseries \color{blue} #1 \par}}
+
+
+%%%%%%% Package Includes %%%%%%%
+\usepackage[margin=\margin,foot=1cm]{geometry}
+\usepackage[activate]{microtype}
+\usepackage[onehalfspacing]{setspace}
+\usepackage{makeidx}
+\usepackage[autostyle=true,german=quotes]{csquotes}
+\usepackage{longtable}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{pdfpages}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{array}
+\usepackage{calc}
+\usepackage[right]{eurosym}
+\usepackage{wrapfig}
+\usepackage{pgffor}
+\usepackage[perpage, hang, multiple, stable]{footmisc}
+\usepackage[printonlyused]{acronym}
+\usepackage{listings}
+\lstset{literate=%
+        {Ö}{{\"O}}1
+        {Ä}{{\"A}}1
+        {Ü}{{\"U}}1
+        {ß}{{\ss}}1
+        {ü}{{\"u}}1
+        {ä}{{\"a}}1
+        {ö}{{\"o}}1
+        {~}{{\textasciitilde}}1
+} % Umlaute in Listings
+\usepackage[obeyFinal,backgroundcolor=yellow,linecolor=black]{todonotes}
+\usepackage{rotating}
+\usepackage{lscape}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{\documentFont}
+\usepackage[%
+    breaklinks,
+    pdftitle={\documentTitle},
+    pdfauthor={\documentAuthor},
+    pdfsubject={\documentType},
+    pdfcreator={pdflatex, LaTeX with KOMA-Script},
+    pdfpagemode=UseOutlines,     % Show Contents while opening
+    pdfdisplaydoctitle=true,     % Show document title instead of file name
+    pdflang={\documentLanguage}, % Document language
+]{hyperref}
+\usepackage{bookmark}
+\usepackage[nonumberlist,toc]{glossaries}
+\usepackage{amsfonts}
+\usepackage{pgfplots}
+\usepackage{placeins}
+\pgfplotsset{compat=1.15}
+\usepackage{mathrsfs}
+\usetikzlibrary{arrows}
+
+\usepackage{circledsteps}
+
+% \input{ads/code-highlighting-header}
+\usepackage[export]{adjustbox}
+\usepackage{booktabs}
+\usepackage{abstract}
+\usepackage{lipsum}
+
+% Generate glossary
+\makeglossaries{}
+
+% Load colors
+\defineColors{}
+
+% Set Titel, Autor and Date
+\title{\documentTitle}
+\author{\documentAuthor}
+\date{\datum}
+
+
+% PDF link settings
+\hypersetup{%
+    colorlinks=true,
+    linkcolor=LinkColor,
+    citecolor=LinkColor,
+    filecolor=LinkColor,
+    menucolor=LinkColor,
+    urlcolor=LinkColor,
+    linktocpage=true,
+    bookmarksnumbered=true
+}
+
+% Captions fontsize
+\addtokomafont{caption}{\small}
+
+% Bibliographie settings
+\iflang{de}{%
+    \usepackage[
+        backend=biber,        % recommended. Alternative: bibtex
+        bibwarn=true,
+        bibencoding=utf8,             % If .bib file is encoded with utf8, otherwise ascii
+        sortlocale=de_DE,
+        style=\quoteStyle,
+    ]{biblatex}
+}
+\iflang{en}{%
+    \usepackage[
+        backend=biber,        % recommended. Alternative: bibtex
+        bibwarn=true,
+        bibencoding=utf8,        % If .bib file is encoded with utf8, otherwise ascii
+        sortlocale=en_US,
+        style=\quoteStyle,
+    ]{biblatex}
+}
+
+% break long links in bibliography
+\setcounter{biburllcpenalty}{7000}
+\setcounter{biburlucpenalty}{8000}
+
+\addbibresource{bibliography.bib}
+
+% Hurenkinder und Schusterjungen verhindern
+% http://projekte.dante.de/DanteFAQ/Silbentrennung
+\clubpenalty = 10000 % schließt Schusterjungen aus (Seitenumbruch nach der ersten Zeile eines neuen Absatzes)
+\widowpenalty = 10000 % schließt Hurenkinder aus (die letzte Zeile eines Absatzes steht auf einer neuen Seite)
+\displaywidowpenalty=10000
+
+% Graphicspath
+\graphicspath{{images/}}
+
+
+% "define" Scala
+\lstdefinelanguage{Scala}{
+    morekeywords={abstract,case,catch,class,def,%
+    do,else,extends,false,final,finally,%
+    for,if,implicit,import,match,mixin,%
+    new,null,object,override,package,%
+    private,protected,requires,return,sealed,%
+    super,this,throw,trait,true,try,%
+    type,val,var,while,with,yield},
+    keywordstyle=\color{blue},
+    otherkeywords={\%,\<,\>,\#,\$},
+    sensitive=true,
+    morecomment=[l]{//},
+    morecomment=[n]{/*}{*/},
+    morestring=[b]",
+    morestring=[b]',
+    morestring=[b]""",
+    ndkeywords={@Deprecated, @JvmField, @JvmName, @JvmOverloads, @JvmStatic, @JvmSynthetic, @RunWith, Array, DoubleArray, FloatArray, Byte, Double, Float, Int, Integer, Iterable, Long, Runnable, Short, String, Unit},
+    ndkeywordstyle={\color{orange}\bfseries},
+}
+
+%\lstset{frame=tb,
+%    language=Scala,
+%    aboveskip=3mm,
+%    belowskip=3mm,
+%    showstringspaces=false,
+%    columns=flexible,
+%    basicstyle={\small\ttfamily},
+%    numbers=none,
+%    numberstyle=\tiny\color{gray},
+%    frame=single,
+%    breaklines=true,
+%    breakatwhitespace=true,
+%    tabsize=3,
+%    stringstyle=\color[rgb]{0.0,0.55,0.0}
+%}
+
+\lstdefinelanguage{Kotlin}{
+    comment=[l]{//},
+    emphstyle={\color{red}},
+    identifierstyle=\color{black},
+    morekeywords=[2]{},
+    morekeywords=[3]{},
+    keywordstyle=[2]\color{red},
+    keywordstyle=[3]\color[rgb]{0.0,0.0,0.75},
+    keywords={!in, !is, abstract, actual, annotation, as, as?, break, by, catch, class, companion, const, constructor, continue, crossinline, data, delegate, do, dynamic, else, enum, expect, external, false, field, file, final, finally, for, fun, if, import, in, infix, init, inline, inner, interface, internal, is, lateinit, noinline, null, object, open, operator, out, override, package, param, private, property, protected, public, receiveris, reified, return, return@, sealed, set, setparam, super, suspend, tailrec, this, throw, true, try, typealias, typeof, val, var, vararg, when, where, while},
+    morecomment=[s]{/*}{*/},
+    morestring=[b]",
+    morestring=[s]{"""*}{*"""},
+    ndkeywords={@Deprecated, @JvmField, @JvmName, @JvmOverloads, @JvmStatic, @JvmSynthetic, Array, DoubleArray, FloatArray, Byte, Double, Float, Int, Integer, Iterable, Long, Runnable, Short, String, Unit},
+    ndkeywordstyle={\color{orange}\bfseries},
+    sensitive=true,
+    showstringspaces=false,
+    keywordstyle=\color[rgb]{0.9,0.1,0.9},
+    commentstyle=\color[rgb]{0.6,0.6,0.6}
+}
+\definecolor{dkgreen}[rgb]{0.0,0.55,0.0}
+
+% frequently used programing languages
+\lstloadlanguages{PHP,Python,Java,Kotlin,C,C++,bash}
+
+\listingsettings{}
+% Rename Listings
+\renewcommand\lstlistingname{\listingPhrase}
+\renewcommand\lstlistlistingname{\listListingPhrase}
+\def\lstlistingautorefname{\authorListingPhrase}
+
+% Spaces in tables
+\setlength{\tabcolsep}{\tableColumnMargin}
+\renewcommand{\arraystretch}{\tableRowMargin}
