@@ -3,7 +3,7 @@
     <texify-bibtex>
       <compiler>BIBER</compiler>
       <compiler-path />
-      <compiler-arguments />
+      <compiler-arguments>--input-directory=$PROJECT_DIR$/out</compiler-arguments>
       <envs>
         <env name="BIBINPUTS" value="$PROJECT_DIR$/src/out" />
         <env name="BSTINPUTS" value="$PROJECT_DIR$/src/out" />
