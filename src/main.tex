@@ -22,7 +22,7 @@
     BCOR=8mm,               % BCOR settings (Bindekorrektur)
     headinclude=false,      % Exclude header from print space
     footinclude=false,      % Exclude footer from print space
-    listof=totoc,           % Show List of Figures/Tables in Contents
+    listof=none,            % Exclude 'List of Figures/Tables' in Contents
     toc=bibliography,       % Show Bibliography in Contents
 ]{scrreprt}
 
@@ -41,8 +41,8 @@
     \pagenumbering{Roman}
 
     % Restriction notices
-    %    \input{ads/restrictionNotices}
-    %    \newpage
+    \input{ads/restrictionNotices}
+    \newpage
 
 
     % Declaration
@@ -50,8 +50,8 @@
     \newpage
 
     % Abstract
-    %\input{content/abstract}
-    %\newpage
+    \input{content/abstract}
+    \newpage
 
     % only page number in footer
     \pagestyle{plain}
@@ -78,11 +78,13 @@
 
     % List of Figures
     \cleardoublepage
+    \addcontentsline{toc}{chapter}{Abbildungsverzeichnis}
     \listoffigures
 
     %List of Tables
-    % \cleardoublepage
-    % \listoftables
+    \cleardoublepage
+    \addcontentsline{toc}{chapter}{Tabellenverzeichnis}
+    \listoftables
 
     % List of Listings
     \cleardoublepage
@@ -107,9 +109,9 @@
     \printbibliography[heading=bibintoc,title={Literaturverzeichnis}]
 
     % Glossar
-    % \cleardoublepage
-    % \printglossary[style=altlist,title=\glossaryPhrase]
-    % \input{content/glossary}
+    \cleardoublepage
+    \printglossary[style=altlist,title=\glossaryPhrase]
+    \input{content/glossary}
 
     % Appendix
     \clearpage
